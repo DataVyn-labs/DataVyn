@@ -1,1 +1,11 @@
-streamlit
+streamlit>=1.32.0
+pandas>=2.0.0
+numpy>=1.24.0
+plotly>=5.18.0
+openpyxl>=3.1.0
+reportlab>=4.0.0
+requests>=2.31.0
+pyarrow>=14.0.0
+sqlalchemy>=2.0.0
+kaggle>=1.6.0
+pymysql>=1.1.0
