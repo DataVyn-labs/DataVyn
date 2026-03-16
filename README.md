@@ -4,7 +4,6 @@
 
 A production-grade Streamlit data intelligence platform.
 
-[![Open App](https://img.shields.io/badge/Open%20DataVyn%20App-Live-success?style=for-the-badge)](https://datavyn.streamlit.app)
 ---
 
 ## 🚀 Quick Start
