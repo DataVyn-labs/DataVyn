@@ -29,7 +29,6 @@ datavyn/
 ├── style.css                 # Custom dark neon theme
 ├── requirements.txt
 └── modules/
-    ├── __init__.py
     ├── state.py              # Session state management
     ├── sidebar.py            # Sidebar with stats & settings
     ├── overview.py           # Landing / overview page
