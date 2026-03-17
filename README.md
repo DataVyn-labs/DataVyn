@@ -97,3 +97,5 @@ DataVyn uses a custom dark neon-industrial theme with:
 ## Star History ⭐
 
 [![Star History Chart](https://api.star-history.com/svg?repos=DataVyn-labs/DataVyn&type=date&legend=top-left)](https://www.star-history.com/#DataVyn-labs/DataVyn&type=date&legend=top-left)
+
+---
