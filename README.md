@@ -1,8 +1,3 @@
-<p align="center">
-  <img src="logo.png" width="350" alt="DataVyn Labs">
-</p>
-
----
  
 <img width="1282" height="681" alt="final datavynlabs" src="https://github.com/user-attachments/assets/ea49cedc-7049-47e0-9f09-0d09da5850ff" />
 
