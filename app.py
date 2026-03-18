@@ -6,7 +6,7 @@ st.set_page_config(
     page_title="DataVyn",
     page_icon="⚡",
     layout="wide",
-    initial_sidebar_state="expanded"
+    initial_sidebar_state="collapsed"
 )
 
 with open("style.css", encoding="utf-8") as f:
