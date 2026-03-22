@@ -88,6 +88,13 @@ DataVyn uses a custom dark neon-industrial theme with:
 
 ---
 
-*DataVyn Labs v1.0.0*
+## About DataVyn Labs
+
+**DataVyn Labs** builds intelligent data automation and AI agent tools for modern teams.
+
+🔗 [github.com/DataVyn-labs](https://github.com/DataVyn-labs)
 
 ---
+
+*© 2026 DataVyn Labs*
+
