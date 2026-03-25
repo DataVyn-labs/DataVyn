@@ -9,3 +9,4 @@ pyarrow>=14.0.0
 sqlalchemy>=2.0.0
 kaggle>=1.6.0
 pymysql>=1.1.0
+
