@@ -175,6 +175,7 @@ html, body, .stApp {
 /* HIDE CHROME ONLY - nothing sidebar related touched */
 #MainMenu { visibility: hidden; }
 footer    { visibility: hidden; }
+<<<<<<< HEAD
 
 /* CHART CARDS — seamless container for plotly charts */
 .chart-card-wrap {
@@ -194,3 +195,5 @@ footer    { visibility: hidden; }
 [data-testid="stHorizontalBlock"] > div {
     gap: 0.5rem;
 }
+=======
+>>>>>>> 43fa942054e3155017250ec95d17cf0d5c0732ef

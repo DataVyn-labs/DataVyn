@@ -1,9 +1,18 @@
+<<<<<<< HEAD
 # ⚡ DataVyn Labs
 
 **Automate Your Data. Illuminate Your Insights.**
 
 A production-grade Streamlit data intelligence platform.
 
+=======
+ 
+<img width="1282" height="681" alt="final datavynlabs" src="https://github.com/user-attachments/assets/ea49cedc-7049-47e0-9f09-0d09da5850ff" />
+
+A production-grade Streamlit data intelligence platform.
+
+**[![Open App](https://img.shields.io/badge/Open%20DataVyn%20App-Live-success?style=for-the-badge)](https://datavyn.streamlit.app)**
+>>>>>>> 43fa942054e3155017250ec95d17cf0d5c0732ef
 ---
 
 ## 🚀 Quick Start
@@ -28,7 +37,10 @@ datavyn/
 ├── style.css                 # Custom dark neon theme
 ├── requirements.txt
 └── modules/
+<<<<<<< HEAD
     ├── __init__.py
+=======
+>>>>>>> 43fa942054e3155017250ec95d17cf0d5c0732ef
     ├── state.py              # Session state management
     ├── sidebar.py            # Sidebar with stats & settings
     ├── overview.py           # Landing / overview page
@@ -89,4 +101,17 @@ DataVyn uses a custom dark neon-industrial theme with:
 
 ---
 
+<<<<<<< HEAD
 *DataVyn Labs v1.0.0*
+=======
+## About DataVyn Labs
+
+**DataVyn Labs** builds intelligent data automation and AI agent tools for modern teams.
+
+🔗 [github.com/DataVyn-labs](https://github.com/DataVyn-labs)
+
+---
+
+*© 2026 DataVyn Labs*
+
+>>>>>>> 43fa942054e3155017250ec95d17cf0d5c0732ef
