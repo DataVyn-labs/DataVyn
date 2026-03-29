@@ -9,8 +9,5 @@ pyarrow>=14.0.0
 sqlalchemy>=2.0.0
 kaggle>=1.6.0
 pymysql>=1.1.0
-<<<<<<< HEAD
-statsmodels>=0.14.0
-=======
 
->>>>>>> 43fa942054e3155017250ec95d17cf0d5c0732ef
+statsmodels>=0.14.0
