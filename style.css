@@ -175,25 +175,3 @@ html, body, .stApp {
 /* HIDE CHROME ONLY - nothing sidebar related touched */
 #MainMenu { visibility: hidden; }
 footer    { visibility: hidden; }
-<<<<<<< HEAD
-
-/* CHART CARDS — seamless container for plotly charts */
-.chart-card-wrap {
-    border: 1px solid #1e2840;
-    border-radius: 12px;
-    overflow: hidden;
-    margin-bottom: 1rem;
-    background: #161c2a;
-}
-
-/* Fix plotly chart background bleed */
-.js-plotly-plot .plotly {
-    border-radius: 0 0 10px 10px;
-}
-
-/* Stat analysis cards row spacing */
-[data-testid="stHorizontalBlock"] > div {
-    gap: 0.5rem;
-}
-=======
->>>>>>> 43fa942054e3155017250ec95d17cf0d5c0732ef

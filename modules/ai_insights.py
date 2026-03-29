@@ -2,7 +2,6 @@ import streamlit as st
 import pandas as pd
 import numpy as np
 import json
-<<<<<<< HEAD
 import requests
 import io
 from modules.state import get_state
@@ -108,44 +107,6 @@ PRIORITY_COLORS = {
     "HIGH":   ("#f06060", "#f0606020"),
     "MEDIUM": ("#f0a429", "#f0a42920"),
     "LOW":    ("#3ecf8e", "#3ecf8e20"),
-=======
-from modules.state import get_state
-
-
-INSIGHT_PROMPTS = {
-    "🔍 Executive Summary": """You are a senior data analyst. Analyze this dataset and provide a concise executive summary in 4-5 bullet points covering: what the data represents, key patterns, standout statistics, and one actionable recommendation. Use plain language. Data info:
-{data_info}
-Statistics:
-{stats}
-""",
-    "📊 Statistical Deep Dive": """As a statistician, analyze this dataset. Cover: distribution shapes, outliers, skewness, notable correlations (if present), and data quality observations. Format as clear paragraphs.
-Data info:
-{data_info}
-Statistics:
-{stats}
-Sample rows:
-{sample}
-""",
-    "⚠️ Anomaly Detection": """Analyze this dataset for anomalies, outliers, and suspicious patterns. List specific column names and values. Suggest possible explanations.
-Statistics:
-{stats}
-Sample:
-{sample}
-""",
-    "💡 Business Insights": """Act as a business intelligence consultant. Extract 5 actionable business insights from this data. For each insight: state the finding, its business implication, and a recommended action. Be specific.
-Data info:
-{data_info}
-Statistics:
-{stats}
-""",
-    "🧹 Data Quality Report": """Perform a data quality assessment. Cover: completeness, consistency, data type issues, cardinality concerns, potential encoding problems, and recommendations for cleaning. Be specific about column names.
-Data info:
-{data_info}
-Column details:
-{column_details}
-""",
-    "❓ Ask a Custom Question": None,
->>>>>>> 43fa942054e3155017250ec95d17cf0d5c0732ef
 }
 
 
@@ -154,26 +115,17 @@ def build_context(df: pd.DataFrame) -> dict:
     cat_cols = df.select_dtypes(include=["object", "category"]).columns.tolist()
 
     data_info = (
-<<<<<<< HEAD
-        f"Rows: {len(df):,} | Columns: {len(df.columns)}\n"
-        f"Numeric columns: {', '.join(num_cols)}\n"
-        f"Categorical columns: {', '.join(cat_cols)}\n"
-        f"Missing values: {df.isnull().sum().sum():,}\n"
-        f"Duplicate rows: {df.duplicated().sum():,}\n"
-=======
         f"Rows: {len(df)}, Columns: {len(df.columns)}\n"
         f"Numeric cols: {', '.join(num_cols)}\n"
         f"Categorical cols: {', '.join(cat_cols)}\n"
         f"Missing values: {df.isnull().sum().sum()}\n"
         f"Duplicates: {df.duplicated().sum()}\n"
->>>>>>> 43fa942054e3155017250ec95d17cf0d5c0732ef
     )
 
     stats = ""
     if num_cols:
         desc = df[num_cols].describe().round(3)
         stats = desc.to_string()
-<<<<<<< HEAD
         # Add skew and correlation hints
         skews = df[num_cols].skew().round(2)
         stats += f"\n\nSkewness:\n{skews.to_string()}"
@@ -347,45 +299,10 @@ def render_insight_output(text: str):
                     st.markdown(f"<div style='font-family:Inter,sans-serif;font-size:0.83rem;font-weight:600;color:#e8edf5;margin:0.3rem 0;'>{clean}</div>", unsafe_allow_html=True)
                 else:
                     st.markdown(f"<div style='font-family:Inter,sans-serif;font-size:0.82rem;color:#8895aa;line-height:1.6;margin:0.1rem 0;'>{line}</div>", unsafe_allow_html=True)
-=======
-
-    column_details = ""
-    for col in df.columns:
-        vc = df[col].value_counts().head(5)
-        column_details += f"\n{col} ({df[col].dtype}): missing={df[col].isnull().sum()}, unique={df[col].nunique()}, top={vc.index.tolist()[:3]}"
-
-    sample = df.head(5).to_string()
-
-    return {
-        "data_info": data_info,
-        "stats": stats,
-        "column_details": column_details,
-        "sample": sample,
-    }
-
-
-def call_claude(api_key: str, prompt: str) -> str:
-    import requests
-    headers = {
-        "x-api-key": api_key,
-        "anthropic-version": "2023-06-01",
-        "content-type": "application/json",
-    }
-    body = {
-        "model": "claude-sonnet-4-20250514",
-        "max_tokens": 1500,
-        "messages": [{"role": "user", "content": prompt}],
-    }
-    resp = requests.post("https://api.anthropic.com/v1/messages", headers=headers, json=body, timeout=60)
-    resp.raise_for_status()
-    data = resp.json()
-    return data["content"][0]["text"]
->>>>>>> 43fa942054e3155017250ec95d17cf0d5c0732ef
 
 
 def render_ai_insights():
     st.markdown("""
-<<<<<<< HEAD
     <div style="margin-bottom:1.4rem;">
         <div style="font-family:'Inter',sans-serif;font-size:0.95rem;font-weight:600;color:#e8edf5;">
             AI Analyst
@@ -432,42 +349,10 @@ def render_ai_insights():
             <div style="font-family:'Inter',sans-serif;font-size:0.82rem;color:#8895aa;">
                 Upload a file or connect to a database first.
             </div>
-=======
-    <div class="dv-section-title">🤖 AI Insights</div>
-    <div class="dv-section-sub">POWERED BY CLAUDE — BRING YOUR OWN API KEY</div>
-    """, unsafe_allow_html=True)
-
-    state = get_state()
-    df = state.get("df")
-    api_key = state.get("api_key", "")
-
-    # Key check
-    if not api_key:
-        st.markdown("""
-        <div class="dv-card dv-card-violet">
-            <h3>🔑 API Key Required</h3>
-            <p>Add your <strong>Anthropic API key</strong> in the sidebar to unlock AI-powered insights. Your key is stored only in your session and never sent to any server except Anthropic's API.</p>
-        </div>
-        """, unsafe_allow_html=True)
-        api_key_inline = st.text_input("Or enter your Anthropic API key here:", type="password", key="ai_key_inline")
-        if api_key_inline:
-            state["api_key"] = api_key_inline
-            api_key = api_key_inline
-            st.rerun()
-        return
-
-    # Data check
-    if df is None:
-        st.markdown("""
-        <div class="dv-card">
-            <h3>📁 No Data Loaded</h3>
-            <p>Upload a file, connect to Kaggle, or connect to a database first to generate AI insights.</p>
->>>>>>> 43fa942054e3155017250ec95d17cf0d5c0732ef
         </div>
         """, unsafe_allow_html=True)
         return
 
-<<<<<<< HEAD
     # ── Status bar
     source = state.get("source", "Unknown")
     st.markdown(f"""
@@ -483,122 +368,11 @@ def render_ai_insights():
         <span style="font-family:'JetBrains Mono',monospace;font-size:0.65rem;color:#4a566a;">
             {state.get('ai_calls', 0)} calls this session
         </span>
-=======
-    st.markdown(f"""
-    <div class="dv-card dv-card-green">
-        <h3>✅ Ready for Analysis</h3>
-        <p>Data: <strong>{state.get('source', 'Unknown')}</strong> — {len(df):,} rows × {len(df.columns)} columns<br>
-        API: <strong>Connected</strong> (key ending in ...{api_key[-6:]})</p>
->>>>>>> 43fa942054e3155017250ec95d17cf0d5c0732ef
     </div>
     """, unsafe_allow_html=True)
 
     context = build_context(df)
 
-<<<<<<< HEAD
-    # ── Mode selector
-    col1, col2 = st.columns([3, 1])
-    with col1:
-        mode = st.selectbox(
-            "Analysis type",
-            list(PROMPT_TEMPLATES.keys()),
-            key="ai_mode",
-            label_visibility="collapsed"
-        )
-    with col2:
-        run = st.button("Run Analysis", key="gen_insights", use_container_width=True)
-
-    # ── Custom question
-    custom_q = ""
-    if mode == "Ask the Analyst":
-        custom_q = st.text_area(
-            "Ask anything about your data",
-            placeholder="e.g. Why are sales dropping in Q3? Which customer segment is most valuable?",
-            height=90,
-            key="custom_q",
-            label_visibility="collapsed"
-        )
-
-    # ── Run
-    if run:
-        if mode == "Ask the Analyst" and not custom_q.strip():
-            st.warning("Enter your question first.")
-            return
-
-        with st.spinner("Analyzing..."):
-            try:
-                if mode == "Ask the Analyst":
-                    prompt = f"""The user is asking about their data. Answer as a decision-driven analyst.
-Always follow the strict insight format (Insight / Reason / Action / Impact).
-
-Dataset: {context['data_info']}
-Statistics: {context['stats']}
-Sample: {context['sample']}
-
-User question: {custom_q}"""
-                else:
-                    prompt = PROMPT_TEMPLATES[mode].format(**context)
-
-                result = call_claude(api_key, prompt)
-                state["ai_calls"] = state.get("ai_calls", 0) + 1
-                st.session_state["last_insight"]      = result
-                st.session_state["last_insight_mode"] = mode
-
-            except Exception as e:
-                err = str(e)
-                if "401" in err:
-                    st.error("Invalid API key — check your Anthropic key.")
-                elif "429" in err:
-                    st.error("Rate limit hit — wait a moment and try again.")
-                else:
-                    st.error(f"API error: {e}")
-                return
-
-    # ── Render last result
-    last = st.session_state.get("last_insight")
-    if last:
-        st.markdown('<hr style="border:none;border-top:1px solid #1e2840;margin:1.2rem 0;">', unsafe_allow_html=True)
-
-        last_mode = st.session_state.get("last_insight_mode", mode)
-        st.markdown(f"""
-        <div style="font-family:'JetBrains Mono',monospace;font-size:0.65rem;color:#4a566a;
-                    letter-spacing:2px;text-transform:uppercase;margin-bottom:1rem;">
-            {last_mode} — Results
-        </div>
-        """, unsafe_allow_html=True)
-
-        render_insight_output(last)
-
-        # ── Export
-        st.markdown('<hr style="border:none;border-top:1px solid #1e2840;margin:1.2rem 0;">', unsafe_allow_html=True)
-        ex1, ex2 = st.columns(2)
-        with ex1:
-            if st.button("Generate PDF Report", key="gen_pdf", use_container_width=True):
-                with st.spinner("Building PDF..."):
-                    try:
-                        pdf_bytes = generate_insight_pdf(df, last, last_mode, state)
-                        st.download_button(
-                            "Download PDF",
-                            data=pdf_bytes,
-                            file_name="datavyn_analyst_report.pdf",
-                            mime="application/pdf",
-                            key="dl_pdf"
-                        )
-                    except Exception as e:
-                        st.error(f"PDF error: {e}")
-        with ex2:
-            st.download_button(
-                "Download as Text",
-                data=last.encode("utf-8"),
-                file_name="datavyn_insights.txt",
-                mime="text/plain",
-                key="dl_txt",
-                use_container_width=True
-            )
-
-
-def generate_insight_pdf(df: pd.DataFrame, insight_text: str, mode: str, state: dict) -> bytes:
-=======
     # ── Insight type selector
     st.markdown('<div class="dv-section-title" style="font-size:1rem;">Select Analysis Type</div>', unsafe_allow_html=True)
     insight_type = st.selectbox("Analysis Mode", list(INSIGHT_PROMPTS.keys()), key="ai_mode")
@@ -727,69 +501,11 @@ Provide a thorough, specific answer based on the data provided."""
 
 
 def generate_insight_pdf(df: pd.DataFrame, insight_text: str, state: dict) -> bytes:
->>>>>>> 43fa942054e3155017250ec95d17cf0d5c0732ef
     from reportlab.lib.pagesizes import letter
     from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer, Table, TableStyle, HRFlowable
     from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
     from reportlab.lib import colors
     from reportlab.lib.units import inch
-<<<<<<< HEAD
-
-    buf = io.BytesIO()
-    doc = SimpleDocTemplate(buf, pagesize=letter,
-                            topMargin=0.8*inch, bottomMargin=0.8*inch,
-                            leftMargin=0.8*inch, rightMargin=0.8*inch)
-    styles = getSampleStyleSheet()
-
-    BLUE   = colors.HexColor("#4f8ef7")
-    DARK   = colors.HexColor("#0d1117")
-    GREY   = colors.HexColor("#8895aa")
-    LIGHT  = colors.HexColor("#f8fafc")
-    BORDER = colors.HexColor("#e2e8f0")
-
-    T = ParagraphStyle("T", parent=styles["Title"], fontSize=20,
-                       textColor=colors.HexColor("#1e293b"), spaceAfter=4)
-    S = ParagraphStyle("S", parent=styles["Normal"], fontSize=8,
-                       textColor=GREY, spaceAfter=16)
-    H = ParagraphStyle("H", parent=styles["Heading2"], fontSize=12,
-                       textColor=BLUE, spaceBefore=12, spaceAfter=6)
-    B = ParagraphStyle("B", parent=styles["Normal"], fontSize=9,
-                       textColor=colors.HexColor("#334155"), leading=14, spaceAfter=5)
-
-    story = [
-        Paragraph("DataVyn — Analyst Report", T),
-        Paragraph(f"Mode: {mode}  |  Source: {state.get('source','Unknown')}  |  {len(df):,} rows × {len(df.columns)} cols", S),
-        HRFlowable(width="100%", thickness=1, color=BLUE),
-        Spacer(1, 10),
-    ]
-
-    # Stats table
-    story.append(Paragraph("Dataset Summary", H))
-    tbl_data = [
-        ["Metric", "Value"],
-        ["Rows",             f"{len(df):,}"],
-        ["Columns",          str(len(df.columns))],
-        ["Missing Values",   f"{df.isnull().sum().sum():,}"],
-        ["Duplicate Rows",   f"{df.duplicated().sum():,}"],
-        ["Completeness",     f"{round((1 - df.isnull().sum().sum()/max(df.size,1))*100,1)}%"],
-    ]
-    tbl = Table(tbl_data, colWidths=[3*inch, 3.4*inch])
-    tbl.setStyle(TableStyle([
-        ("BACKGROUND",   (0,0), (-1,0), BLUE),
-        ("TEXTCOLOR",    (0,0), (-1,0), colors.white),
-        ("FONTNAME",     (0,0), (-1,0), "Helvetica-Bold"),
-        ("FONTSIZE",     (0,0), (-1,-1), 9),
-        ("ROWBACKGROUNDS",(0,1),(-1,-1), [LIGHT, colors.white]),
-        ("GRID",         (0,0), (-1,-1), 0.5, BORDER),
-        ("LEFTPADDING",  (0,0), (-1,-1), 8),
-        ("TOPPADDING",   (0,0), (-1,-1), 4),
-        ("BOTTOMPADDING",(0,0), (-1,-1), 4),
-    ]))
-    story += [tbl, Spacer(1, 14)]
-
-    story.append(Paragraph("AI Analysis", H))
-    story.append(HRFlowable(width="100%", thickness=0.5, color=BORDER))
-=======
     import io as _io
 
     buf = _io.BytesIO()
@@ -845,36 +561,11 @@ def generate_insight_pdf(df: pd.DataFrame, insight_text: str, state: dict) -> by
     # Insight text
     story.append(Paragraph("AI Analysis", heading_style))
     story.append(HRFlowable(width="100%", thickness=0.5, color=colors.HexColor("#e2e8f0")))
->>>>>>> 43fa942054e3155017250ec95d17cf0d5c0732ef
     story.append(Spacer(1, 6))
 
     for line in insight_text.split("\n"):
         line = line.strip()
         if not line:
-<<<<<<< HEAD
-            story.append(Spacer(1, 3))
-        elif line.startswith("##") or line.startswith("#"):
-            story.append(Paragraph(line.lstrip("#").strip(), H))
-        elif line.startswith("**") and line.endswith("**"):
-            story.append(Paragraph(f"<b>{line.strip('*')}</b>", B))
-        elif line.startswith("**"):
-            clean = line.replace("**", "")
-            story.append(Paragraph(clean, B))
-        elif line.startswith("- ") or line.startswith("• "):
-            story.append(Paragraph(f"• {line[2:]}", B))
-        else:
-            safe = line.replace("&","&amp;").replace("<","&lt;").replace(">","&gt;")
-            story.append(Paragraph(safe, B))
-
-    story += [
-        Spacer(1, 16),
-        HRFlowable(width="100%", thickness=0.5, color=BORDER),
-        Paragraph("Generated by DataVyn Labs · datavyn.ai", S),
-    ]
-
-    doc.build(story)
-    return buf.getvalue()
-=======
             story.append(Spacer(1, 4))
             continue
         if line.startswith("#"):
@@ -937,4 +628,3 @@ def generate_full_suite_pdf(df: pd.DataFrame, results: dict, state: dict) -> byt
 
     doc.build(story)
     return buf.getvalue()
->>>>>>> 43fa942054e3155017250ec95d17cf0d5c0732ef
