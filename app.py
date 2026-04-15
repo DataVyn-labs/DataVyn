@@ -37,7 +37,7 @@ def main():
     """, unsafe_allow_html=True)
 
         
-    st.info(" DISCLAIMER: DataVyn is currently in early Development phase. This app is intended for prototyping and testing purposes for [organisation](https://github.com/DataVyn-labs). For more info Visit [DataVyn](https://datavyn.vercel.app)")
+    st.info(" DISCLAIMER: DataVyn is currently in early Development phase. This app is intended for prototyping and testing purposes for [DataVyn Labs](https://github.com/DataVyn-labs). For more info Visit [DataVyn](https://datavyn.vercel.app)")
 
     tabs = st.tabs(["Overview", "Upload Data", "Kaggle Connect", "Database Connect", "AI Insights"])
 
